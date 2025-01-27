@@ -1,0 +1,77 @@
+{% extends 'core/main.html' %}
+{% load static %}
+{% block title %}Django | Add Worker {% endblock title %}
+
+
+{% block main_content %}
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">Django CURD Systems</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+            <a href="#">
+                <i class="icon-home"></i>
+            </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Add Worker</h4>
+                        <a
+                            href="{% url 'home' %}"
+                            class="btn btn-info btn-round ms-auto"
+                        >
+                            <i class="fa fa-arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-info">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock main_content %}
+
+{% block js_script %}
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            var form = $(this);
+            var formData = form.serialize();
+    
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add-worker' %}",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal('You have successfully unsupported this topic !', "", "success");
+                        window.location.href = "/"; // Redirect to homepage
+                    } else {
+                        swal('wrong Something went wrong !', "", "error");
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    swal('wrong Something went wrong !', "", "error");
+                }
+            });
+        });
+    });
+  </script>
+{% endblock js_script %}
